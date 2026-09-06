@@ -1,0 +1,20 @@
+% README screenshot of paper Fig. 4 - layout copied from the paper source,
+% caption shortened and stripped of cross-references.
+\documentclass[border=8pt]{standalone}
+\usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
+\graphicspath{{../../../}}
+\begin{document}
+\begin{minipage}{16.5cm}
+\small
+\centering
+\begin{tabular}{@{\hskip 0.06in}c@{\hskip 0.06in}c@{\hskip 0.06in}c@{\hskip 0.05in}c}
+   AR & MQAR & MQAR & \\
+   (a) Linear Model & (b) Linear Model & (c) Full Model & \\
+    \raisebox{-0.5\height}{\includegraphics[width=0.32\linewidth]{figures/AR__D_N__linear_trained__regime_2__acc_curve__sigma_inv.png}} &
+    \raisebox{-0.5\height}{\includegraphics[width=0.32\linewidth]{figures/MQAR__D_N__linear_trained__regime_2__acc_curve__sigma_inv.png}} &
+    \raisebox{-0.5\height}{\includegraphics[width=0.32\linewidth]{figures/MQAR__D_N__full_trained__regime_2__acc_curve__sigma_inv.png}} &
+ \\
+ \end{tabular}
+\end{minipage}
+\end{document}

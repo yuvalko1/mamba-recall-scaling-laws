@@ -1,0 +1,105 @@
+{
+  runtime: {
+    seed: 0,
+    should_train: true,
+    device: null,
+  },
+  seeds: {
+    n_seeds: 1,
+    start_seed: 0,
+  },
+  model: {
+    "class": "mamba_ssm",
+    "variant": "full",
+    "args": {
+      "d_model": null,
+      "n_layer": null,
+      "vocab_size": null,
+      "ssm_cfg": {
+        "layer": "Mamba1",
+        "d_state": null,
+        "d_conv": 2,
+        "expand": 2,
+        "bias": false
+      },
+      "rms_norm": true,
+      "residual_in_fp32": true,
+      "fused_add_norm": true,
+      "pad_vocab_size_multiple": 1,
+      "tie_embeddings": true,
+    },
+  },
+  dataset: {
+    kwargs: {
+      power_a: 1.0,
+      random_non_queries: true,
+      reduce_to_AR: false,
+      num_key_repeats: 1,
+      num_query_repeats: 1,
+    },
+    batch_size: 32,
+    split_size: {
+      val: 1000,
+      test: 1000,
+    },
+  },
+  training: {
+    optimizer: {
+      learning_rate: 0.01,
+      betas: [
+        0.9,
+        0.95,
+      ],
+      weight_decay: 0.0,
+    },
+    scheduler: {
+      num_warmup_steps: 100,
+      num_steps_at_max: 5900,
+      decay_type: "cosine",
+      num_decay_steps: 14000,
+      decay_factor: 0.0,
+    },
+    label_smoothing: 0.1,
+    clip_grad: true,
+    clip_grad_max_norm: 0.75,
+    grad_accum_steps: 1,
+    use_amp: false,
+    max_num_steps: 20000,
+    evaluate_any_num_steps: 1000,
+    threshold_accuracy: 0.999,
+    save_logs_any_num_steps: 250,
+    save_model_at_evaluation: false,
+    save_model_checkpoints: false,
+    view_train_tqdm: true,
+    view_evaluation_tqdm: false,
+    print_non_tqdm_debug_messages: false,
+    view_per_gridpoint_tqdm: false,
+  },
+  parallel: {
+    devices_to_use: ["cuda:0"],
+    num_processes_per_device: 16,
+    num_cpu_threads_per_process: 1,
+  },
+  wandb: {
+    activate: true,
+    accuracy_grid_plots: {
+      activate: true,
+    },
+    verbose: false,
+    log_val: false,
+  },
+  grid_options: {
+    shuffle: false,
+  },
+  grid: {
+    V: 512,
+    L: 64,
+    N_facts: 16,
+    D: "np.array([16, 32, 48, 64])",
+    N: "np.array([8, 16, 24, 32])",
+    Lambda: 1,
+    M: 1,
+    x_axis: "D",
+    y_axis: "N",
+  },
+}

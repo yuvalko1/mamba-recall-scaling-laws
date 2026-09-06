@@ -1,0 +1,15 @@
+# Pinned versions of the direct dependencies in requirements.txt - the exact
+# release-validated stack (torch and the mamba-ssm/causal-conv1d wheels are
+# pinned separately in scripts/setup_venv.sh). Applied via:
+#     pip install -r requirements.txt -c constraints.txt
+einops==0.8.2
+json5==0.15.0
+matplotlib==3.11.1
+pandas==3.0.5
+pydantic==2.13.5
+pymupdf==1.28.2
+pytest==9.1.1
+scipy==1.18.1
+tqdm==4.70.0
+transformers==5.16.1
+wandb==0.29.0

@@ -1,0 +1,14 @@
+# Direct dependencies of this project. Normally installed with:
+#     pip install -r requirements.txt -c constraints.txt
+# See constraints.txt for the pinned versions the code was tested with.
+einops
+json5
+matplotlib
+pandas
+pydantic
+pymupdf  # PDF->PNG render for scripts/figures/external/make_readme_figures.py (optional step; also needs pdflatex)
+pytest
+scipy
+tqdm
+transformers  # not imported by our code; required transitively by mamba_ssm (utils/generation.py)
+wandb

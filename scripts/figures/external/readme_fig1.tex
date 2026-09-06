@@ -1,0 +1,49 @@
+% README screenshot of paper Fig. 1 - layout copied from the paper source,
+% caption shortened and stripped of cross-references.
+\documentclass[border=8pt]{standalone}
+\usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs,multirow,makecell}
+\graphicspath{{../../../}}
+\begin{document}
+\begin{minipage}{16.5cm}
+\small
+\centering
+\begin{tabular}{@{\hskip 0.1in}c  @{\hskip 0.05in}c@{\hskip 0.05in}c@{\hskip 0.05in}c@{\hskip 0.05in}c@{\hskip 0.05in}c@{\hskip 0.05in}}
+    \toprule
+  \multirow{2}{*}{} &
+  \multicolumn{3}{c}{Simplified Linear Model} &
+  \multicolumn{1}{c}{Full Model} & \\
+  \cmidrule(lr){2-4}
+  \cmidrule(lr){5-5}
+   & (a) Designed & (b) Theory & (c) Trained & (d) Trained & \\
+  \cmidrule(lr){1-5}
+    \makecell{\textbf{(i)} \\ $V=1024$ \\ $L=64$ \\ $N_f=16$} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/MQAR__D_N__linear_designed__regime_2.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/MQAR__D_N__linear_trained__regime_2__theoretical.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/MQAR__D_N__linear_trained__regime_2.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/MQAR__D_N__full_trained__regime_2.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.032\linewidth]{colorbar.png}}
+ \\
+    \cmidrule(lr){1-5}
+    \makecell{\textbf{(ii)} \\ $V=512$ \\ $L=128$ \\ $N_f=32$} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/appendix/MQAR__D_N__linear_designed__regime_1.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/appendix/MQAR__D_N__linear_trained__regime_1__theoretical.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/appendix/MQAR__D_N__linear_trained__regime_1.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.20\linewidth]{figures/appendix/MQAR__D_N__full_trained__regime_1.png}} &
+    \raisebox{-0.5\height}{
+    \includegraphics[width=0.032\linewidth]{colorbar.png}}
+ \\
+ \bottomrule
+ \end{tabular}
+\end{minipage}
+\end{document}

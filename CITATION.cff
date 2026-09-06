@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper (see preferred-citation)."
+title: "On the Recall Scaling Laws in Mamba"
+authors:
+  - family-names: "Koren"
+    given-names: "Yuval"
+  - family-names: "Ben-Kish"
+    given-names: "Assaf"
+  - family-names: "Giryes"
+    given-names: "Raja"
+  - family-names: "Wolf"
+    given-names: "Lior"
+  - family-names: "Zimerman"
+    given-names: "Itamar"
+license: MIT
+repository-code: "https://github.com/yuvalko1/mamba-recall-scaling-laws"
+preferred-citation:
+  type: article
+  title: "On the Recall Scaling Laws in Mamba"
+  authors:
+    - family-names: "Koren"
+      given-names: "Yuval"
+    - family-names: "Ben-Kish"
+      given-names: "Assaf"
+    - family-names: "Giryes"
+      given-names: "Raja"
+    - family-names: "Wolf"
+      given-names: "Lior"
+    - family-names: "Zimerman"
+      given-names: "Itamar"
+  journal: "arXiv preprint arXiv:2609.07681"
+  year: 2026
