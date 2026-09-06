@@ -1,0 +1,116 @@
+{
+  // Micro-grid fixture for the wet system test (test/system/wet/test_micro_grid_run.py):
+  // a 2x2 D-N grid of tiny simplified-mamba models, ~150 steps each, so the full
+  // parent/worker/logger pipeline runs end-to-end on one GPU in well under 5 minutes.
+  // The test fills parallel.devices_to_use at runtime with the freest GPU.
+  runtime: {
+    experiment_name: "micro_grid",
+    seed: 0,
+    should_train: true,
+    device: null,
+    is_test: true,  // results go under test/results/
+  },
+  seeds: {
+    n_seeds: 1,
+    start_seed: 0,
+  },
+  model: {
+    "class": "mamba_tiny",
+    variant: "simplified",
+    args: {
+      vocab_size: null,
+      d_model: null,
+      d_state: null,
+      expand: 2,
+      d_conv: 2,
+      n_layers: null,
+      bias: false,
+      conv_bias: false,
+      scan_mode: "cumsum",
+    },
+    kwargs: {
+      skip_normalizations: true,
+      skip_non_linearities: true,
+      skip_gating: true,
+      skip_biases: true,
+      skip_discretization: true,
+      skip_residual_connection: true,
+      ssm_mode: "attention",
+      compute_attention: true,
+      freeze_initialized_weights: true,
+      init_A: 1,
+      init_D: 0,
+      set_designed_mqar_weights: false,
+    },
+  },
+  dataset: {
+    kwargs: {
+      power_a: 1.0,
+      random_non_queries: true,
+      reduce_to_AR: false,
+      num_key_repeats: 1,
+      num_query_repeats: 1,
+    },
+    batch_size: 8,
+    split_size: {
+      val: 200,
+      test: 200,
+    },
+  },
+  training: {
+    optimizer: {
+      learning_rate: 0.01,
+      betas: [0.9, 0.95],
+      weight_decay: 0.0,
+    },
+    scheduler: {
+      num_warmup_steps: 20,
+      num_steps_at_max: 30,
+      decay_type: "cosine",
+      num_decay_steps: 100,
+      decay_factor: 0.0,
+    },
+    label_smoothing: 0.1,
+    clip_grad: true,
+    clip_grad_max_norm: 1.5,
+    grad_accum_steps: 1,
+    use_amp: false,
+    max_num_steps: 150,
+    evaluate_any_num_steps: 50,
+    threshold_accuracy: 1,
+    save_logs_any_num_steps: 50,
+    save_model_at_evaluation: false,
+    save_model_checkpoints: false,
+    view_train_tqdm: false,
+    view_evaluation_tqdm: false,
+    print_non_tqdm_debug_messages: false,
+    view_per_gridpoint_tqdm: true,  // plain progress lines; no pinned-bar block under pytest
+  },
+  parallel: {
+    devices_to_use: null,  // filled by the test with the freest GPU
+    num_processes_per_device: 2,
+    num_cpu_threads_per_process: 1,
+  },
+  wandb: {
+    activate: false,
+    accuracy_grid_plots: {
+      activate: false,
+    },
+    verbose: false,
+    log_val: false,
+  },
+  grid_options: {
+    shuffle: false,
+  },
+  grid: {
+    V: 64,
+    L: 32,
+    N_facts: 4,
+    D: "np.array([16, 32])",
+    N: "np.array([8, 16])",
+    Lambda: 1,
+    M: 1,
+    x_axis: "D",
+    y_axis: "N",
+  },
+}

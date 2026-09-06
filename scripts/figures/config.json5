@@ -1,0 +1,182 @@
+{
+  // Drives the generic figure makers. Each `grids` entry maps a saved_runs_data/
+  // bundle (root: 'results' plots a local run) to:
+  //   make_grid_figures.py           -> figures/<name>.png
+  //   make_scaling_curve_figures.py  -> figures/<name>__acc_curve__sigma_inv.png
+  // Entries may override `defaults`; opt out with grid_figure/curve_figure: false.
+
+  defaults: {
+    root: 'saved_runs_data',
+    split: 'val',
+    seed_aggregation: 'max',
+    show_title: false,
+    show_text: false,
+    show_cbar: false,
+    figsize: [7, 5],
+    cmap: 'inferno',
+    // paper-PNG format: italic math axis labels + endpoint-anchored quarter ticks
+    math_labels: true,
+    ticks_type: 'quarter',
+  },
+
+  // mech-interp figures (make_mech_interp_figures.py): Fig 3 + the reversing appendix figures.
+  mech_interp: {
+    run: 'MQAR__D_N__linear_trained__mech_interp/mamba_tiny_simplified__D_N_V256_L64_Nf16_Lambda1_M1__29_08_2026__18_31_41',
+    cells: [
+      { D: 64, N: 32, seed: 13 }, // paper body (Fig 3)
+      { D: 48, N: 32, seed: 26 },
+      { D: 64, N: 24, seed: 14 },
+    ],
+    plot_kwargs: {
+      cmap: 'inferno', vmin: 0, vmax: null,
+      no_title: true, no_cbar: true, save: true
+    },
+  },
+
+  grids: {
+    MQAR__D_N__linear_trained__regime_0: {
+      curve_subdir: 'appendix',
+      run: 'MQAR__D_N__linear_trained__regime_0/mamba_tiny_simplified__D_N_V512_L64_Nf16_Lambda1_M1__28_08_2026__19_57_27',
+    },
+    MQAR__D_N__linear_trained__regime_1: {
+      grid_subdir: 'appendix', curve_subdir: 'appendix',
+      run: 'MQAR__D_N__linear_trained__regime_1/mamba_tiny_simplified__D_N_V512_L128_Nf32_Lambda1_M1__28_08_2026__19_57_28',
+    },
+    MQAR__D_N__linear_trained__regime_2: {
+      run: 'MQAR__D_N__linear_trained__regime_2/mamba_tiny_simplified__D_N_V1024_L64_Nf16_Lambda1_M1__28_08_2026__19_57_28',
+    },
+
+    // full-model (mamba_ssm) grids
+    MQAR__D_N__full_trained__regime_0: {
+      curve_subdir: 'appendix',
+      run: 'MQAR__D_N__full_trained__regime_0/mamba_ssm_full__D_N_V512_L64_Nf16_Lambda1_M1__28_08_2026__18_45_36',
+    },
+    MQAR__D_N__full_trained__regime_1: {
+      grid_subdir: 'appendix', curve_subdir: 'appendix',
+      run: 'MQAR__D_N__full_trained__regime_1/mamba_ssm_full__D_N_V512_L128_Nf32_Lambda1_M1__28_08_2026__18_45_36',
+    },
+    MQAR__D_N__full_trained__regime_2: {
+      run: 'MQAR__D_N__full_trained__regime_2/mamba_ssm_full__D_N_V1024_L64_Nf16_Lambda1_M1__28_08_2026__18_45_36',
+    },
+
+    // derived approximate-theory panels (theory_approx): the paper's '...__acc_grid__theoretical'
+    // format - closed-form sigma^2 = a*N_f/(ND) + 1/D, Phi(1/sigma - m_V); computed from the
+    // referenced trained bundle's axes/constants, no run involved. regime_2 is the Fig. 1 panel
+    MQAR__D_N__linear_trained__regime_0__theoretical: {
+      grid_subdir: 'appendix',
+      run: 'MQAR__D_N__linear_trained__regime_0/mamba_tiny_simplified__D_N_V512_L64_Nf16_Lambda1_M1__28_08_2026__19_57_27',
+      theory_approx: true,
+    },
+    MQAR__D_N__linear_trained__regime_1__theoretical: {
+      grid_subdir: 'appendix',
+      run: 'MQAR__D_N__linear_trained__regime_1/mamba_tiny_simplified__D_N_V512_L128_Nf32_Lambda1_M1__28_08_2026__19_57_28',
+      theory_approx: true,
+    },
+    MQAR__D_N__linear_trained__regime_2__theoretical: {
+      run: 'MQAR__D_N__linear_trained__regime_2/mamba_tiny_simplified__D_N_V1024_L64_Nf16_Lambda1_M1__28_08_2026__19_57_28',
+      theory_approx: true,
+    },
+
+    // designed grids (weights set analytically, forward-only eval)
+    MQAR__D_N__linear_designed__regime_0: {
+      grid_subdir: 'appendix',
+      curve_figure: false,
+      run: 'MQAR__D_N__linear_designed__regime_0/mamba_tiny_simplified__D_N_V512_L64_Nf16_Lambda1_M1__29_08_2026__16_25_15',
+    },
+    MQAR__D_N__linear_designed__regime_1: {
+      grid_subdir: 'appendix',
+      curve_figure: false,
+      run: 'MQAR__D_N__linear_designed__regime_1/mamba_tiny_simplified__D_N_V512_L128_Nf32_Lambda1_M1__29_08_2026__16_25_22',
+    },
+    MQAR__D_N__linear_designed__regime_2: {
+      curve_figure: false,
+      run: 'MQAR__D_N__linear_designed__regime_2/mamba_tiny_simplified__D_N_V1024_L64_Nf16_Lambda1_M1__29_08_2026__16_25_10',
+    },
+    AR__D_N__linear_designed__regime_0: {
+      grid_subdir: 'appendix',
+      grid_figure: false,
+      curve_figure: false,
+      run: 'AR__D_N__linear_designed__regime_0/mamba_tiny_simplified__D_N_V512_L64_Nf16_Lambda1_M1__29_08_2026__16_25_26',
+    },
+
+    // mech-interp bundle (regime-0 recipe at V=256, 1 seed, saves best model per cell).
+    // used only by make_mech_interp_figures.py: no grid PNG, no collapse curve
+    MQAR__D_N__linear_trained__mech_interp: {
+      grid_figure: false,
+      curve_figure: false,
+      run: 'MQAR__D_N__linear_trained__mech_interp/mamba_tiny_simplified__D_N_V256_L64_Nf16_Lambda1_M1__29_08_2026__18_31_41',
+    },
+
+    // large-vocab/length sweep: V to 50k x L to 4k, scale_Nf_with_L, D=150, N=75
+    MQAR__V_L__linear_trained: {
+      grid_subdir: 'appendix',
+      curve_figure: false,
+      run: 'MQAR__V_L__linear_trained/mamba_tiny_simplified__V_L_Nf_D150_N75_Lambda1_M1__30_08_2026__15_05_54',
+      // multi-layer paper format (cell values, all ticks, colorbar), rectangular
+      show_text: true,
+      show_cbar: true,
+      ticks_type: 'all',
+      make_square: false,
+      figsize: [12, 6],
+      ax_labelsize: 18,
+      tick_labelsize: 14,
+    },
+
+    // repeated keys (appendix): Lambda x N_k grid, Lambda*N=60 fixed.
+    // multi-layer paper format (cell values, all ticks, colorbar); no collapse mapping
+    MQAR__Lambda_Nk__linear_trained: {
+      grid_subdir: 'appendix', curve_figure: false,
+      run: 'MQAR__Lambda_Nk__linear_trained/mamba_tiny_simplified__Lambda_N_k_V512_L128_Nf10_D100_N_M1__30_08_2026__04_44_13',
+      show_text: true, show_cbar: true, ticks_type: 'all', make_square: false, figsize: [12, 6],
+      ax_labelsize: 18, tick_labelsize: 14,
+    },
+
+    // AR trained grids
+    AR__D_N__linear_trained__regime_0: {
+      grid_figure: false,
+      curve_subdir: 'appendix',
+      run: 'AR__D_N__linear_trained__regime_0/mamba_tiny_simplified__D_N_V512_L64_Nf16_Lambda1_M1__29_08_2026__17_48_53',
+    },
+    AR__D_N__linear_trained__regime_1: {
+      grid_figure: false,
+      grid_subdir: 'appendix', curve_subdir: 'appendix',
+      run: 'AR__D_N__linear_trained__regime_1/mamba_tiny_simplified__D_N_V512_L128_Nf32_Lambda1_M1__29_08_2026__17_48_58',
+    },
+    AR__D_N__linear_trained__regime_2: {
+      grid_subdir: 'appendix',
+      run: 'AR__D_N__linear_trained__regime_2/mamba_tiny_simplified__D_N_V1024_L64_Nf16_Lambda1_M1__29_08_2026__17_49_03',
+    },
+    AR__N_Lambda__linear_trained: {
+      grid_subdir: 'appendix', curve_subdir: 'appendix',
+      run: 'AR__N_Lambda__linear_trained/mamba_tiny_simplified__N_Lambda_V512_Nf80_L320_D64_M1__31_08_2026__20_03_14',
+      show_text: true, show_cbar: true, ticks_type: 'all', make_square: false, figsize: [12, 6],
+      ax_labelsize: 18, tick_labelsize: 14,
+    },
+
+    // multi-layer / multi-head grids.
+    // paper format differs from the D-N grids: per-cell values, all integer ticks;
+    // multi-layer additionally wide + colorbar
+    MQAR__N_Lambda__linear_trained: {
+      curve_subdir: 'appendix',
+      run: 'MQAR__N_Lambda__linear_trained/mamba_tiny_simplified__N_Lambda_V512_Nf80_L320_D64_M1__29_08_2026__14_11_48',
+      show_text: true, show_cbar: true, ticks_type: 'all', make_square: false, figsize: [12, 6],
+      ax_labelsize: 18, tick_labelsize: 14,
+    },
+    MQAR__N_M__linear_trained__regime_0__MQA: {
+      run: 'MQAR__N_M__linear_trained__regime_0__MQA/mamba_tiny_simplified__N_M_V512_Nf16_L64_D60_Lambda1__29_08_2026__14_11_54',
+      show_text: true, math_labels: false, ticks_type: null, figsize: [10, 6], ax_labelsize: 18, tick_labelsize: 14,
+    },
+    MQAR__N_M__linear_trained__regime_0__MKA: {
+      run: 'MQAR__N_M__linear_trained__regime_0__MKA/mamba_tiny_simplified__N_M_V512_Nf16_L64_D60_Lambda1__29_08_2026__14_11_59',
+      show_text: true, math_labels: false, ticks_type: null, figsize: [10, 6], ax_labelsize: 18, tick_labelsize: 14,
+    },
+    MQAR__N_M__linear_trained__regime_0__MVA: {
+      run: 'MQAR__N_M__linear_trained__regime_0__MVA/mamba_tiny_simplified__N_M_V512_Nf16_L64_D60_Lambda1__29_08_2026__14_12_03',
+      show_text: true, math_labels: false, ticks_type: null, figsize: [10, 6], ax_labelsize: 18, tick_labelsize: 14,
+    },
+    MQAR__N_M__linear_trained__regime_0__MHA: {
+      run: 'MQAR__N_M__linear_trained__regime_0__MHA/mamba_tiny_simplified__N_M_V512_Nf16_L64_D60_Lambda1__29_08_2026__14_12_09',
+      show_text: true, math_labels: false, ticks_type: null, figsize: [10, 6], ax_labelsize: 18, tick_labelsize: 14,
+    },
+  },
+}

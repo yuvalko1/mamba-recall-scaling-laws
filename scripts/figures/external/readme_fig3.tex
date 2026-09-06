@@ -1,0 +1,18 @@
+% README screenshot of paper Fig. 3 - layout copied from the paper source,
+% caption shortened and stripped of cross-references.
+\documentclass[border=8pt]{standalone}
+\usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
+\graphicspath{{../../../}}
+\begin{document}
+\begin{minipage}{16.5cm}
+\small
+\centering
+\begin{tabular}{@{\hskip 0.05in}c@{\hskip 0.05in}c@{\hskip 0.05in}c@{\hskip 0.05in}}
+  $H_t$ & $H_t'$ & $H_t''$ \\
+  \includegraphics[width=0.320\linewidth]{figures/mech_interp__D64_N32__hidden_state__H_ideal.png} &
+  \includegraphics[width=0.180\linewidth]{figures/mech_interp__D64_N32__hidden_state__H_noisy.png} &
+  \includegraphics[width=0.320\linewidth]{figures/mech_interp__D64_N32__hidden_state__H_projected.png}
+\end{tabular}
+\end{minipage}
+\end{document}
