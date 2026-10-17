@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the paper (see preferred-citation)."
-title: "On the Recall Scaling Laws in Mamba"
+title: "On the Recall Scaling Laws in Mamba: A Theoretical and Mechanistic Study via Hashing"
 authors:
   - family-names: "Koren"
     given-names: "Yuval"
@@ -16,7 +16,7 @@ license: MIT
 repository-code: "https://github.com/yuvalko1/mamba-recall-scaling-laws"
 preferred-citation:
   type: article
-  title: "On the Recall Scaling Laws in Mamba"
+  title: "On the Recall Scaling Laws in Mamba: A Theoretical and Mechanistic Study via Hashing"
   authors:
     - family-names: "Koren"
       given-names: "Yuval"
@@ -29,4 +29,5 @@ preferred-citation:
     - family-names: "Zimerman"
       given-names: "Itamar"
   journal: "arXiv preprint arXiv:2609.07681"
+  url: "https://arxiv.org/abs/2609.07681"
   year: 2026

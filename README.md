@@ -1,13 +1,14 @@
-# On the Recall Scaling Laws in Mamba
+# On the Recall Scaling Laws in Mamba: A Theoretical and Mechanistic Study via Hashing
 
 [Yuval Koren](https://github.com/yuvalko1) · [Assaf Ben-Kish](https://assafbk.github.io/website/) · [Raja Giryes](https://www.giryes.sites.tau.ac.il/) · [Lior Wolf](https://www.cs.tau.ac.il/~wolf/) · [Itamar Zimerman](https://itamarzimm.github.io/)
 
 Blavatnik School of Computer Science and AI, Tel Aviv University
 
 [![arXiv](https://img.shields.io/badge/arXiv-2609.07681-b31b1b.svg)](https://arxiv.org/abs/2609.07681)
+[![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue)](https://neurips.cc/virtual/2026/poster/155580)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-This repository contains the code for the paper
+This repository contains the official implementation of the NeurIPS 2026 paper
 ["On the Recall Scaling Laws in Mamba: A Theoretical and Mechanistic Study via Hashing"](https://arxiv.org/abs/2609.07681).
 
 In this work, we:
