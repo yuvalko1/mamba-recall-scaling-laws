@@ -5,12 +5,12 @@ screenshots (figures/external/readme_fig<N>.png).
 Each readme_fig<N>.tex replicates the corresponding paper figure's layout (same panel
 PNGs, same tabular structure) with a shortened, cross-reference-free caption.
 Rerun after replacing the underlying figure PNGs (they are included from
-`paper/figures/...` via \\graphicspath) to refresh the README images.
+the repo's own `figures/...` via \\graphicspath) to refresh the README images.
 
 Requires `pdflatex` on PATH (any standard LaTeX distribution, e.g. TeX Live)
 and `pymupdf` for the PDF->PNG render.
 
-    python scripts/figures/external/make_readme_figures.py [--figs 1 2 3 4] [--dpi 200]
+    python scripts/figures/external/make_readme_figures.py [--figs 1 2 3] [--dpi 200]
 """
 
 import argparse
@@ -33,7 +33,7 @@ def find_pdflatex() -> str:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--figs", type=int, nargs="+", default=[1, 2, 3, 4])
+    ap.add_argument("--figs", type=int, nargs="+", default=[1, 2, 3])
     ap.add_argument("--dpi", type=int, default=380)
     args = ap.parse_args()
 

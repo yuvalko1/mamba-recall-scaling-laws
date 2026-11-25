@@ -8,8 +8,8 @@
 # Usage (from anywhere):
 #     bash scripts/figures/make_all_figures.sh
 #
-# Verifies the exact figure inventory at the end: 18 body + 53 appendix
-# (+ 4 external when pdflatex is available) PNGs, all (re)written by this run
+# Verifies the exact figure inventory at the end: 20 body + 55 appendix
+# (+ 3 external when pdflatex is available) PNGs, all (re)written by this run
 # (totals pinned, in sync with test/system/dry/test_figure_scripts.py).
 
 set -euo pipefail
@@ -17,18 +17,20 @@ set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PYTHON="${PYTHON:-$PROJECT_DIR/.venv/bin/python}"
 
-EXPECTED_BODY=17
-EXPECTED_APPENDIX=54
-EXPECTED_EXTERNAL=4
+EXPECTED_BODY=20
+EXPECTED_APPENDIX=55
+EXPECTED_EXTERNAL=3
 
 SCRIPTS=(
     make_grid_figures.py
     make_scaling_curve_figures.py
+    make_main_curve_figures.py
     make_mech_interp_figures.py
     appendix/make_large_vocab_figures.py
     appendix/make_repeats_figures.py
     appendix/make_seeds_analysis_figures.py
     appendix/make_circuit_ablation_figure.py
+    appendix/make_nl_mamba2_figure.py
 )
 
 start_stamp="$(mktemp)"

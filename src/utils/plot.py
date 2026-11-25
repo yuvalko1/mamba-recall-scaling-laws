@@ -22,7 +22,7 @@ def configure_matplotlib(dpi: int = DPI, ax_labelsize=36, tick_labelsize=24):
     })
 
 
-def save_figure_to_png(fig, save_dir, save_name, dpi=DPI, tight=True, verbose=True):
+def save_figure_to_png(fig, save_dir, save_name, dpi=DPI, tight=True, verbose=True, bbox_inches='tight'):
 
     if tight:
         fig.tight_layout()
@@ -33,7 +33,7 @@ def save_figure_to_png(fig, save_dir, save_name, dpi=DPI, tight=True, verbose=Tr
 
     fig.savefig(
         out_png,
-        dpi=dpi, facecolor='white', bbox_inches='tight',
+        dpi=dpi, facecolor='white', bbox_inches=bbox_inches,
         pad_inches=0.05, transparent=False,
     )
 

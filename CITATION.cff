@@ -15,7 +15,7 @@ authors:
 license: MIT
 repository-code: "https://github.com/yuvalko1/mamba-recall-scaling-laws"
 preferred-citation:
-  type: article
+  type: conference-paper
   title: "On the Recall Scaling Laws in Mamba: A Theoretical and Mechanistic Study via Hashing"
   authors:
     - family-names: "Koren"
@@ -28,6 +28,6 @@ preferred-citation:
       given-names: "Lior"
     - family-names: "Zimerman"
       given-names: "Itamar"
-  journal: "arXiv preprint arXiv:2609.07681"
-  url: "https://arxiv.org/abs/2609.07681"
+  collection-title: "The Fortieth Annual Conference on Neural Information Processing Systems"
+  url: "https://openreview.net/forum?id=4ZDfHcccsn"
   year: 2026

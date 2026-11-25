@@ -1,0 +1,48 @@
+{
+  // Zero-shot associative recall on the pretrained Mamba2 family (appendix).
+  runtime: {
+    experiment_type: "nl_zero_shot_mamba2",
+    seed: 0,
+    device: null,
+  },
+  seeds: {
+    // one random context per seed
+    n_seeds: 30,
+    start_seed: 0,
+  },
+  models: [
+    // pinned Hub revisions
+    { name: "Mamba2-370M", hf_repo: "state-spaces/mamba2-370m", revision: "0eb4c69a118dc9b7568ce0b52990dc8f99967983" },
+    { name: "Mamba2-780M", hf_repo: "state-spaces/mamba2-780m", revision: "2f1ce3195cbfbf0b2f0c01fdf8856b6dbe4ac10e" },
+    { name: "Mamba2-1.3B", hf_repo: "state-spaces/mamba2-1.3b", revision: "c5b59d00ec85d313adea86a08cad2a43c962dd3b" },
+    { name: "Mamba2-2.7B", hf_repo: "state-spaces/mamba2-2.7b", revision: "99b226cc377d131cccc610ed4346db564f381f1e" },
+  ],
+  tokenizer: {
+    hf_repo: "EleutherAI/gpt-neox-20b",
+    revision: "c292233c833e336628618a88a648727eb3dff0a7",
+  },
+  prompt: {
+    // "<prefix> k=v, k=v, ..., k="
+    prefix: "Complete the following sequence:",
+    fact_format: " {key}={value}",
+    separator: ",",
+    query_format: " {key}=",
+  },
+  facts: {
+    N_facts: "np.arange(10, 251, 20)",
+    key_chars: 8,                        // random lowercase keys, unique within a context
+    value_digits: 5,                     // random digit strings
+    queries_per_context: 32,             // keys scored per context
+  },
+  generation: {
+    max_new_tokens: 8,
+    dtype: "bfloat16",
+    batch_size: 32,
+  },
+  parallel: {
+    devices_to_use: null,                // null: all visible GPUs, one model per device
+  },
+  wandb: {
+    activate: false,
+  },
+}

@@ -14,8 +14,24 @@ from mqar import MqarDimensions
 PROJECT_DIR = Path(__file__).resolve().parents[3]
 CONFIG_DIR = PROJECT_DIR / 'config'
 
-RUN_CONFIG_PATHS = sorted(CONFIG_DIR.rglob('*.json5'))
+ALL_CONFIG_PATHS = sorted(CONFIG_DIR.rglob('*.json5'))
+
+
+def _load(path: Path) -> dict:
+    return json5.loads(path.read_text())
+
+
+def _experiment_type(path: Path) -> str:
+    return _load(path)['runtime'].get('experiment_type', 'grid')
+
+
+# the training grids (src/main.py) vs. the forward-only zero-shot evaluation of pretrained models
+# (its own entry point, experiments/nl_zero_shot_mamba2.py); each has its own contract below
+RUN_CONFIG_PATHS = [p for p in ALL_CONFIG_PATHS if _experiment_type(p) == 'grid']
 CONFIG_IDS = [str(p.relative_to(CONFIG_DIR)) for p in RUN_CONFIG_PATHS]
+NL_ZERO_SHOT_CONFIG_PATHS = [p for p in ALL_CONFIG_PATHS if _experiment_type(p) == 'nl_zero_shot_mamba2']
+NL_ZERO_SHOT_IDS = [str(p.relative_to(CONFIG_DIR)) for p in NL_ZERO_SHOT_CONFIG_PATHS]
+NL_ZERO_SHOT_REQUIRED_SECTIONS = ('runtime', 'seeds', 'models', 'tokenizer', 'prompt', 'facts', 'generation', 'wandb')
 
 REQUIRED_SECTIONS = ('runtime', 'seeds', 'model', 'dataset',
                      'wandb', 'grid_options', 'grid')
@@ -30,12 +46,10 @@ DIM_NAMES = {f.name for f in fields(MqarDimensions)}
 MECH_INTERP_CONFIG_NAME = 'MQAR__D_N__linear_trained__mech_interp.json5'
 
 
-def _load(path: Path) -> dict:
-    return json5.loads(path.read_text())
-
-
 def test_some_configs_exist():
     assert len(RUN_CONFIG_PATHS) > 20
+    assert len(ALL_CONFIG_PATHS) == len(RUN_CONFIG_PATHS) + len(NL_ZERO_SHOT_CONFIG_PATHS), \
+        'every config must be a training grid or a zero-shot evaluation'
 
 
 @pytest.mark.parametrize('config_path', RUN_CONFIG_PATHS, ids=CONFIG_IDS)
@@ -128,3 +142,45 @@ def test_no_unintended_checkpoint_saving(config_path):
     else:
         assert not saves_best_model and not saves_per_evaluation, \
             'only the mech-interp config may save models'
+
+
+@pytest.mark.parametrize('config_path', NL_ZERO_SHOT_CONFIG_PATHS, ids=NL_ZERO_SHOT_IDS)
+def test_nl_zero_shot_config_contract(config_path):
+    """The zero-shot pretrained-model evaluation: sections the runner reads, pinned Hub revisions
+    (reproducibility), a feasible facts axis, and a clean initialization with a byte-identical
+    archived config."""
+    import shutil
+    from experiments.nl_zero_shot_mamba2 import initialize_nl_zero_shot_run, _parse_axis, make_facts
+    from utils.common import test_results_dir
+    import random
+
+    run_config = _load(config_path)
+    for section in NL_ZERO_SHOT_REQUIRED_SECTIONS:
+        assert section in run_config, f'missing section {section!r}'
+    assert run_config['seeds']['n_seeds'] >= 1
+    assert not run_config['wandb'].get('activate', False), 'forward-only evaluation: nothing to log live'
+    for model in run_config['models']:
+        assert {'name', 'hf_repo', 'revision'} <= set(model), model
+        assert len(model['revision']) == 40, f"{model['name']}: pin the full Hub commit hash"
+    assert len(run_config['tokenizer']['revision']) == 40
+    facts = run_config['facts']
+    axis = _parse_axis(facts['N_facts'])
+    assert axis.size >= 2 and (np.diff(axis) > 0).all()
+    assert int(axis.max()) <= 26 ** facts['key_chars'], 'not enough distinct keys for the largest N_facts'
+    assert facts['value_digits'] >= 1 and facts.get('queries_per_context', 1) >= 1
+    # the prompt pieces must compose: facts render, the query is a prefix of its own fact text
+    prompt = run_config['prompt']
+    key, value = make_facts(1, random.Random(0), facts['key_chars'], facts['value_digits'])[0]
+    fact_text = prompt['fact_format'].format(key=key, value=value)
+    assert fact_text.startswith(prompt['query_format'].format(key=key))
+    assert run_config['generation']['max_new_tokens'] >= 1 and run_config['generation']['batch_size'] >= 1
+
+    run_config['runtime']['experiment_name'] = config_path.stem
+    run_config['runtime']['is_test'] = True
+    try:
+        run_name = initialize_nl_zero_shot_run(run_config, config_path=config_path)
+        assert run_name.startswith(f'{config_path.stem} | '), run_name
+        saved = Path(run_config['io']['run_results_dir']) / 'run_config.json5'
+        assert saved.read_bytes() == config_path.read_bytes()
+    finally:
+        shutil.rmtree(test_results_dir / config_path.stem, ignore_errors=True)

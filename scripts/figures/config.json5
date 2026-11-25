@@ -3,6 +3,8 @@
   // bundle (root: 'results' plots a local run) to:
   //   make_grid_figures.py           -> figures/<name>.png
   //   make_scaling_curve_figures.py  -> figures/<name>__acc_curve__sigma_inv.png
+  //   make_main_curve_figures.py     -> figures/<name>__acc_curve__sigma_inv__main.{png,pdf}
+  //                                     (only the three regime-2 entries of the paper's Fig. 1)
   // Entries may override `defaults`; opt out with grid_figure/curve_figure: false.
 
   defaults: {
@@ -178,5 +180,13 @@
       run: 'MQAR__N_M__linear_trained__regime_0__MHA/mamba_tiny_simplified__N_M_V512_Nf16_L64_D60_Lambda1__29_08_2026__14_12_09',
       show_text: true, math_labels: false, ticks_type: null, figsize: [10, 6], ax_labelsize: 18, tick_labelsize: 14,
     },
+  },
+
+  // zero-shot associative recall on the pretrained Mamba2 family (appendix; not a training grid)
+  nl_zero_shot_mamba2: {
+    root: 'saved_runs_data',
+    run: 'nl_zero_shot_mamba2/hf_mamba2__Nf10-250_k8_v5_q32_seeds30__07_11_2026__05_29_43',
+    ax_labelsize: 18,
+    tick_labelsize: 14,
   },
 }

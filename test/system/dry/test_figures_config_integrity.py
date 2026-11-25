@@ -15,6 +15,7 @@ GRID_ENTRIES = [(name, entry) for name, entry in _config['grids'].items() if ent
 
 def test_config_has_expected_sections():
     assert 'defaults' in _config and 'grids' in _config and 'mech_interp' in _config
+    assert 'nl_zero_shot_mamba2' in _config
     assert len(GRID_ENTRIES) >= 20
 
 
@@ -68,3 +69,14 @@ def test_mech_interp_cells_are_distinct_with_distinct_seeds():
     assert len({c['seed'] for c in cells}) == len(cells), 'input-sequence seeds must differ'
     # the paper-body cell (first) stays the Fig-3 cell
     assert (cells[0]['D'], cells[0]['N']) == (64, 32)
+
+
+def test_nl_zero_shot_entry_points_at_complete_bundle():
+    """The zero-shot pretrained-Mamba2 bundle (appendix): its own section, since it is not a
+    training grid; needs the archived config and the (seed, model, N_facts) accuracy grid."""
+    entry = _config['nl_zero_shot_mamba2']
+    run_dir = PROJECT_DIR / entry.get('root', 'saved_runs_data') / entry['run']
+    assert run_dir.is_dir(), f'bundle missing: {run_dir}'
+    assert (run_dir / 'run_config.json5').is_file()
+    assert (run_dir / 'accuracy_grid__val.npy').is_file()
+    assert (run_dir / 'run_metadata.json').is_file(), 'archive the resolved revisions / library versions'

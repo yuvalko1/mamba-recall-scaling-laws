@@ -26,16 +26,10 @@ In this work, we:
 ---
 
 <p align="center">
-  <img src="figures/external/readme_fig1.png" width="90%" alt="Paper Figure 1: D-N recall accuracy grids across two MQAR regimes">
+  <img src="figures/external/readme_fig1.png" width="90%" alt="Paper Figure 1: recall accuracy grids and their collapse onto the theoretical scaling curve">
 </p>
 
-> **Mamba recall scaling laws: theory versus empirical results.** Recall accuracy, represented by pixel color, against model embedding dimension $D$ and state size $N$. Left to right: (a) simplified linear Mamba model with designed fixed weights, (b) theoretical scaling law, (c) trained linear model, (d) trained full model. Each row represents a different regime of MQAR parameters.
-
-<p align="center">
-  <img src="figures/external/readme_fig4.png" width="90%" alt="Paper Figure 4: single-layer recall scaling curves">
-</p>
-
-> **Single-layer recall scaling laws.** As predicted by our theory, trained Mamba accuracy collapses onto one-dimensional curves of the form $p_\mathrm{recall}(x) \approx \Phi(x-b)$, where $x=\tfrac{1}{\sigma}$ with $\sigma^2=\tfrac{aN_f}{ND}+\tfrac{1}{D}$ and $a$ depends on the task, $b \approx \sqrt{2\log V}$, and $\Phi$ is the standard normal CDF. **Left to right:** (a) Linear model on AR: $a=1$. (b) Linear model on MQAR: $a \approx \tfrac{5}{4}$, as increased number of queries implies larger variance. (c) Full nonlinear Mamba also fits the same law, with $a_\mathrm{full} \approx \tfrac{1}{2} a_\mathrm{linear}$ (determined heuristically), indicating improved performance yet a similar scaling behavior.
+> **Mamba recall scaling laws: theory versus empirical results.** **Top:** Recall accuracy of trained Mamba, represented by pixel color, against model embedding dimension $D$ and state size $N$. **Bottom:** the same accuracies collapse onto the theoretical curve $p_\mathrm{recall}(x)\approx\Phi(x-\sqrt{2\log V})$, with $x=\sqrt{ND/(aN_f+N)}$. Left to right: (a) linear model on AR, (b) linear model on MQAR, (c) full model, theory fits up to a heuristic constant. (Here $V=1024$, $N_f=16$.)
 
 <p align="center">
   <img src="figures/external/readme_fig3.png" width="90%" alt="Paper Figure 3: interpreting the hidden state">
@@ -187,6 +181,12 @@ python scripts/figures/make_grid_figures.py
 python scripts/figures/make_scaling_curve_figures.py
 ```
 
+The same curves in the layout of the paper's Fig. 1 (bottom row):
+
+```bash
+python scripts/figures/make_main_curve_figures.py
+```
+
 Mechanistic interpretability figures:
 
 ```bash
@@ -202,6 +202,13 @@ python scripts/figures/appendix/make_<name>_figures.py
 The figure manifest is [`scripts/figures/config.json5`](scripts/figures/config.json5):
 it maps every figure to its `saved_runs_data/` bundle, and each bundle's archived
 `run_config.json5` is a byte-identical copy of its `config/` file (enforced by tests).
+
+The appendix's zero-shot associative recall experiment on the pretrained Mamba2 LLM family (no training; needs
+`mamba-ssm`) has its own entry point:
+
+```bash
+python src/experiments/nl_zero_shot_mamba2.py -c config/appendix/nl_zero_shot_mamba2.json5
+```
 
 ## Tests
 
@@ -240,14 +247,12 @@ for their excellent work, which this project builds on. Vendored code under
 ## Citation
 
 ```bibtex
-@misc{koren2026recallscalinglawsmamba,
+@inproceedings{koren2026on,
       title={On the Recall Scaling Laws in Mamba: A Theoretical and Mechanistic Study via Hashing},
       author={Yuval Koren and Assaf Ben-Kish and Raja Giryes and Lior Wolf and Itamar Zimerman},
+      booktitle={The Fortieth Annual Conference on Neural Information Processing Systems},
       year={2026},
-      eprint={2609.07681},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2609.07681},
+      url={https://openreview.net/forum?id=4ZDfHcccsn}
 }
 ```
 

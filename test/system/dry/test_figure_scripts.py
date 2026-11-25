@@ -22,11 +22,13 @@ for extra_path in (FIGURE_SCRIPTS_DIR, FIGURE_SCRIPTS_DIR / 'appendix'):
 SCRIPT_NAMES = [
     'make_grid_figures',
     'make_scaling_curve_figures',
+    'make_main_curve_figures',
     'make_mech_interp_figures',
     'make_large_vocab_figures',
     'make_repeats_figures',
     'make_seeds_analysis_figures',
     'make_circuit_ablation_figure',
+    'make_nl_mamba2_figure',
 ]
 SCRIPTS = {name: importlib.import_module(name) for name in SCRIPT_NAMES}
 
@@ -35,13 +37,15 @@ SCRIPTS = {name: importlib.import_module(name) for name in SCRIPT_NAMES}
 EXPECTED_COUNTS = {
     'make_grid_figures': (11, 10),
     'make_scaling_curve_figures': (3, 8),
+    'make_main_curve_figures': (3, 0),
     'make_mech_interp_figures': (3, 24),
     'make_large_vocab_figures': (0, 2),
     'make_repeats_figures': (0, 1),
     'make_seeds_analysis_figures': (0, 8),
     'make_circuit_ablation_figure': (0, 1),
+    'make_nl_mamba2_figure': (0, 1),
 }
-EXPECTED_TOTAL, EXPECTED_BODY, EXPECTED_APPENDIX = 71, 17, 54
+EXPECTED_TOTAL, EXPECTED_BODY, EXPECTED_APPENDIX = 75, 20, 55
 
 
 def _figures_snapshot():
@@ -83,6 +87,8 @@ def figure_inventory(tmp_path_factory):
             current['script'] = name
             if name == 'make_mech_interp_figures':
                 module.main(argv=[])  # don't let argparse read pytest's argv
+            elif name == 'make_main_curve_figures':
+                module.main(save_pdf=False)  # its PDF copy is not redirected
             else:
                 module.main()
     finally:

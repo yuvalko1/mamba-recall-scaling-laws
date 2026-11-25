@@ -1,0 +1,104 @@
+{
+ "run_name": "nl_zero_shot_mamba2 | zero-shot AR, 4 pretrained Mamba2 | Nf10-250, k8, v5, q32, seeds30 | 07.11.2026 05-29-43",
+ "experiment_type": "nl_zero_shot_mamba2",
+ "N_facts": [
+  10,
+  30,
+  50,
+  70,
+  90,
+  110,
+  130,
+  150,
+  170,
+  190,
+  210,
+  230,
+  250
+ ],
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29
+ ],
+ "models": [
+  {
+   "model": {
+    "name": "Mamba2-370M",
+    "hf_repo": "state-spaces/mamba2-370m",
+    "revision": "0eb4c69a118dc9b7568ce0b52990dc8f99967983"
+   },
+   "snapshot": "0eb4c69a118dc9b7568ce0b52990dc8f99967983",
+   "tokenizer_snapshot": "c292233c833e336628618a88a648727eb3dff0a7",
+   "device_name": "NVIDIA B200",
+   "seconds": 300
+  },
+  {
+   "model": {
+    "name": "Mamba2-780M",
+    "hf_repo": "state-spaces/mamba2-780m",
+    "revision": "2f1ce3195cbfbf0b2f0c01fdf8856b6dbe4ac10e"
+   },
+   "snapshot": "2f1ce3195cbfbf0b2f0c01fdf8856b6dbe4ac10e",
+   "tokenizer_snapshot": "c292233c833e336628618a88a648727eb3dff0a7",
+   "device_name": "NVIDIA B200",
+   "seconds": 276
+  },
+  {
+   "model": {
+    "name": "Mamba2-1.3B",
+    "hf_repo": "state-spaces/mamba2-1.3b",
+    "revision": "c5b59d00ec85d313adea86a08cad2a43c962dd3b"
+   },
+   "snapshot": "c5b59d00ec85d313adea86a08cad2a43c962dd3b",
+   "tokenizer_snapshot": "c292233c833e336628618a88a648727eb3dff0a7",
+   "device_name": "NVIDIA B200",
+   "seconds": 272
+  },
+  {
+   "model": {
+    "name": "Mamba2-2.7B",
+    "hf_repo": "state-spaces/mamba2-2.7b",
+    "revision": "99b226cc377d131cccc610ed4346db564f381f1e"
+   },
+   "snapshot": "99b226cc377d131cccc610ed4346db564f381f1e",
+   "tokenizer_snapshot": "c292233c833e336628618a88a648727eb3dff0a7",
+   "device_name": "NVIDIA B200",
+   "seconds": 386
+  }
+ ],
+ "versions": {
+  "python": "3.12.3",
+  "torch": "2.10.0+cu128",
+  "transformers": "5.16.1",
+  "mamba_ssm": "2.3.2.post1"
+ },
+ "example_prompt": "Complete the following sequence: edleqvum=60444, jlasiicl=45541, jxiolbpv=49400, wdojpcuc=50014, efkamvrn=94445, jhrlrrdt=47864, olpfvvqe=69126, nigyzbwp=66584, euylkghq=89487, zzpbadyh=80979, edleqvum="
+}
